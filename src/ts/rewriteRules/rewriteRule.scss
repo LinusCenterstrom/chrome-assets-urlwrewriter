@@ -1,0 +1,36 @@
+.rewrite-rule {
+	display: flex;
+	align-items: center;
+	> * {
+		margin-right: 8px;
+	}
+	margin-bottom: 12px;
+
+	padding: 12px;
+	background-color: #f7f7f7;
+
+	&.disabled {
+		opacity: 0.6;
+	}
+	table {
+		width: 100%;
+	}
+	.ant-input {
+		width: 100%;
+	}
+	.anticon-delete {
+		font-size: 16px;
+	}
+}
+.fullscreen-add-wrapper {
+	height: 100%;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	.ant-button {
+		font-size: 24px;
+		height: 60px;
+		padding: 12.8px 22px;
+	}
+}
