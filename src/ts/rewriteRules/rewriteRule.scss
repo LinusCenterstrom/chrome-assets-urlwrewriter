@@ -23,14 +23,15 @@
 	}
 }
 .fullscreen-add-wrapper {
-	height: 100%;
+	height: calc(100vh - 20px);
 	width: 100%;
 	justify-content: center;
 	align-items: center;
 	display: flex;
-	.ant-button {
-		font-size: 24px;
-		height: 60px;
-		padding: 12.8px 22px;
-	}
+}
+
+.add-rule-button {
+	display: block;
+	width: 100%;
+	margin-top: -12px;
 }

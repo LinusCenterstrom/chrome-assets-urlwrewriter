@@ -36,7 +36,8 @@ export const RewriteRules: React.FC = () => {
 		actions.add({
 			active: true,
 			from: "",
-			to: ""
+			to: "",
+			regex: false
 		});
 	}, [actions]);
 
@@ -51,11 +52,14 @@ export const RewriteRules: React.FC = () => {
 					<RewriteRule key={rule.id} id={rule.id} />
 				))}
 			</div>
-			<div>
-				<Button icon={<PlusOutlined />} onClick={handleAdd}>
-					New rule
-				</Button>
-			</div>
+			<Button
+				className="add-rule-button"
+				icon={<PlusOutlined />}
+				onClick={handleAdd}
+				type="primary"
+			>
+				Add rule
+			</Button>
 		</div>
 	);
 };

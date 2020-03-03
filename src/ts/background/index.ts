@@ -2,6 +2,7 @@ import { createStore } from "../store";
 import { actions } from "../rewrittenUrls/storeSlice";
 import { groupBy } from "csharp-enumeration-functions";
 import { loadPersistedAppState, configureApp } from "./AppConfig";
+import { applyRewriteRule } from "../rewriteRules/applyRewriteRule";
 const persistedState = loadPersistedAppState();
 const store = createStore(persistedState);
 configureApp(store, {
@@ -36,28 +37,33 @@ chrome.webRequest.onBeforeRequest.addListener(
 		const activeCompleteRules = rewriteRules.filter(
 			x => x.from && x.to && x.active
 		);
-		const matchingRules = activeCompleteRules.filter(
-			r => details.url.indexOf(r.from) > -1
-		);
 
-		if (matchingRules.length > 0) {
+		if (activeCompleteRules.length > 0) {
 			let newUrl = details.url;
-			matchingRules.forEach(rule => {
-				newUrl = newUrl.replace(rule.from, rule.to);
-			});
-			store.dispatch(
-				actions.addRewrittenUrl({
-					from: details.url,
-					to: newUrl,
-					//todo fixi, multiple replaces can cause all rules to not apply
-					ruleIds: matchingRules.map(r => r.id),
-					tabId: details.tabId
-				})
-			);
+			const matchedRules: number[] = [];
 
-			return {
-				redirectUrl: newUrl
-			};
+			activeCompleteRules.forEach(rule => {
+				const withUrlApplied = applyRewriteRule(rule, newUrl);
+				if (withUrlApplied != newUrl) {
+					matchedRules.push(rule.id);
+					newUrl = withUrlApplied;
+				}
+			});
+
+			if (matchedRules.length > 0) {
+				store.dispatch(
+					actions.addRewrittenUrl({
+						from: details.url,
+						to: newUrl,
+						ruleIds: matchedRules,
+						tabId: details.tabId
+					})
+				);
+
+				return {
+					redirectUrl: newUrl
+				};
+			}
 		}
 
 		return undefined;

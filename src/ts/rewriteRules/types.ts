@@ -3,4 +3,5 @@ export type UrlRewriteRule = {
 	to: string;
 	active: boolean;
 	id: number;
+	regex: boolean;
 };

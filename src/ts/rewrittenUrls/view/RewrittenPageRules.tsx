@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "../../store";
 import { List, Typography } from "antd";
+import "./RewrittenPageRules.scss";
 
 export const RewrittenPageRules: React.FC<{
 	tabId: number;
@@ -21,13 +22,14 @@ export const RewrittenPageRules: React.FC<{
 
 	return (
 		<List
+			className="rewritten-rules-list"
 			header={
 				<div>Rewritten urls for the current page ({rewrites.length})</div>
 			}
 			dataSource={visibleRewrites.reverse()}
 			size="small"
 			renderItem={item => (
-				<List.Item>
+				<List.Item className="rewritten-rules-listitem">
 					<div>
 						<Typography.Text delete>{item.from}</Typography.Text>
 					</div>
