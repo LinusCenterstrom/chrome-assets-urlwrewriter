@@ -1,15 +1,17 @@
 import { Store, AppState } from "../store";
 import { PersisitedAppState } from "../persistedAppState";
 
-const appStateStorageKey = "app_state";
+const appStateStorageKey = "app_state_2";
 
-export function loadPersistedAppState(): PersisitedAppState | undefined {
-	const state = localStorage.getItem(appStateStorageKey);
+export async function loadPersistedAppState(): Promise<
+	PersisitedAppState | undefined
+> {
+	const state = await chrome.storage.sync.get(appStateStorageKey);
 	if (!state) {
 		return undefined;
 	}
 	try {
-		const parsed = JSON.parse(state);
+		const parsed = JSON.parse(state[appStateStorageKey]);
 		return parsed;
 	} catch (err) {
 		return undefined;
@@ -17,7 +19,9 @@ export function loadPersistedAppState(): PersisitedAppState | undefined {
 }
 function saveAppState(state: AppState) {
 	const { rewrittenUrls: _, ...toSave } = state;
-	localStorage.setItem(appStateStorageKey, JSON.stringify(toSave));
+	chrome.storage.sync.set({
+		[appStateStorageKey]: JSON.stringify(toSave)
+	});
 }
 
 const autoSaveAppState = (store: Store, autosaveFrequencyMS: number) => {

@@ -1,7 +1,6 @@
 export type UrlRewriteRule = {
-	from: string;
-	to: string;
+	fromHost: string;
+	toHost: string;
 	active: boolean;
 	id: number;
-	regex: boolean;
 };

@@ -14,12 +14,12 @@ const settingsSlice = createSlice({
 		},
 		delete: (state, action: PayloadAction<number>) => {
 			state.splice(
-				state.findIndex(rule => rule.id === action.payload),
+				state.findIndex((rule) => rule.id === action.payload),
 				1
 			);
 		},
 		toggleActive: (state, action: PayloadAction<number>) => {
-			const toUpdate = state.find(r => r.id === action.payload);
+			const toUpdate = state.find((r) => r.id === action.payload);
 			if (toUpdate) {
 				toUpdate.active = !toUpdate.active;
 			}
@@ -32,13 +32,13 @@ const settingsSlice = createSlice({
 				id: number;
 			}>
 		) => {
-			const toUpdate = state.find(r => r.id === action.payload.id);
+			const toUpdate = state.find((r) => r.id === action.payload.id);
 			if (toUpdate) {
 				if (action.payload.from !== undefined) {
-					toUpdate.from = action.payload.from;
+					toUpdate.fromHost = action.payload.from;
 				}
 				if (action.payload.to !== undefined) {
-					toUpdate.to = action.payload.to;
+					toUpdate.toHost = action.payload.to;
 				}
 			}
 		}

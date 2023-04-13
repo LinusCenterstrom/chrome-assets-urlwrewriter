@@ -4,17 +4,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ExtensionReloader = require("webpack-extension-reloader");
-const locateContentScripts = require("./utils/locateContentScripts");
 
 const sourceRootPath = path.join(__dirname, "src");
-const contentScriptsPath = path.join(sourceRootPath, "ts", "contentScripts");
 const distRootPath = path.join(__dirname, "dist");
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : "development";
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : "chrome";
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-const contentScripts = locateContentScripts(contentScriptsPath);
 
 const extensionReloader =
 	nodeEnv === "watch"
@@ -31,19 +27,12 @@ const extensionReloader =
 				this.apply = () => {};
 		  };
 
-const cleanWebpackPlugin =
-	nodeEnv === "production"
-		? new CleanWebpackPlugin()
-		: () => {
-				this.apply = () => {};
-		  };
 module.exports = {
 	watch: nodeEnv === "watch",
 	entry: {
 		background: path.join(sourceRootPath, "ts", "background", "index.ts"),
 		options: path.join(sourceRootPath, "ts", "options", "index.tsx"),
-		popup: path.join(sourceRootPath, "ts", "popup", "index.tsx"),
-		...contentScripts
+		popup: path.join(sourceRootPath, "ts", "popup", "index.tsx")
 	},
 	output: {
 		path: distRootPath,
@@ -61,7 +50,10 @@ module.exports = {
 				options: {
 					cacheDirectory: true,
 					babelrc: false,
-					presets: ["@babel/preset-typescript", "@babel/preset-react"],
+					presets: [
+						"@babel/preset-typescript",
+						"@babel/preset-react"
+					],
 					plugins: [
 						"transform-react-jsx",
 						"@babel/plugin-proposal-class-properties",

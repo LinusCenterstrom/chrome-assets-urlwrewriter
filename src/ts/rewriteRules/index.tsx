@@ -21,7 +21,7 @@ function useActions<
 	const wrapped = { ...actionContainer };
 	Object.keys(wrapped).forEach((key: keyof T) => {
 		const actionCreateor = wrapped[key];
-		(wrapped[key] as any) = function(parameter: any) {
+		(wrapped[key] as any) = function (parameter: any) {
 			dispatch(actionCreateor(parameter));
 		};
 	});
@@ -35,8 +35,8 @@ export const RewriteRules: React.FC = () => {
 	const handleAdd = useCallback(() => {
 		actions.add({
 			active: true,
-			from: "",
-			to: "",
+			fromHost: "",
+			toHost: "",
 			regex: false
 		});
 	}, [actions]);
@@ -48,7 +48,7 @@ export const RewriteRules: React.FC = () => {
 	return (
 		<div>
 			<div className="rewrite-rules-list">
-				{rules.map(rule => (
+				{rules.map((rule) => (
 					<RewriteRule key={rule.id} id={rule.id} />
 				))}
 			</div>
@@ -85,14 +85,14 @@ const RewriteRule: React.FC<{
 	id: number;
 }> = ({ id }) => {
 	const rule = useSelector((state: AppState) =>
-		state.rewriteRules.find(rule => rule.id === id)
+		state.rewriteRules.find((rule) => rule.id === id)
 	);
 	const actions = useActions(actionCreators);
 	const [state, setState] = useState(
 		rule
 			? {
-					from: rule.from,
-					to: rule.to
+					from: rule.fromHost,
+					to: rule.toHost
 			  }
 			: {
 					from: "",
@@ -122,12 +122,12 @@ const RewriteRule: React.FC<{
 			<table>
 				<tbody>
 					<tr>
-						<td>From</td>
+						<td>From host</td>
 						<td>
 							<Input
 								value={state.from}
 								onChange={({ target: { value } }) => {
-									setState(prev => ({
+									setState((prev) => ({
 										...prev,
 										from: value
 									}));
@@ -137,12 +137,12 @@ const RewriteRule: React.FC<{
 						</td>
 					</tr>
 					<tr>
-						<td>To</td>
+						<td>To host</td>
 						<td>
 							<Input
 								value={state.to}
 								onChange={({ target: { value } }) => {
-									setState(prev => ({
+									setState((prev) => ({
 										...prev,
 										to: value
 									}));
@@ -161,7 +161,10 @@ const RewriteRule: React.FC<{
 					}}
 					onClick={() => actions.delete(id)}
 				>
-					<DeleteOutlined className="delete-rule" aria-role="button" />
+					<DeleteOutlined
+						className="delete-rule"
+						aria-role="button"
+					/>
 				</Button>
 			</Tooltip>
 		</div>
